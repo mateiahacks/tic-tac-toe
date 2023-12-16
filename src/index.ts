@@ -1,7 +1,5 @@
 import TicTacToe from "./classes/TicTacToe.js";
 
-const game = new TicTacToe(3);
+const game = new TicTacToe(4);
 
 game.run();
-
-console.log(game.board);

@@ -1,12 +1,13 @@
 import Game from "../types/Game";
 import { PLAYER } from "../types/index.js";
+import { generateBoard } from "../utils/helpers.js";
 
 class TicTacToe implements Game {
     board: Array<string>[];
     currentPlayer: PLAYER;
 
-    constructor(n: number) {
-        this.board = new Array(n).fill(new Array<string>(n).fill(""));
+    constructor(size: number) {
+        this.board = generateBoard(size);
         this.currentPlayer = PLAYER.X;
     }
 
@@ -17,16 +18,25 @@ class TicTacToe implements Game {
             this.currentPlayer = PLAYER.X;
     }
 
-    onCellClick(element: HTMLElement, i: number, j: number) {
+    onCellClick(element: HTMLElement, x: number, y: number) {
+        if(element.innerText)
+            return;
+
+        this.removeBoard();
+
         element.innerText = this.currentPlayer;
-        this.board[i][j] = this.currentPlayer;
-        console.log(i, j);
-        console.log(this.board);
+        this.board[x][y] = this.currentPlayer;
         this.switchPlayer();
-        this.draw();
+
+        this.drawBoard();
     }
 
-    draw() {
+    removeBoard() {
+        const boardElement: any = document.querySelector('.board');
+        boardElement?.parentNode.removeChild(boardElement); 
+    }
+
+    drawBoard() {
         const boardElement: HTMLElement = document.createElement('div');
         boardElement.classList.add("board");
 
@@ -47,7 +57,7 @@ class TicTacToe implements Game {
     }
 
     run() {
-        this.draw();
+        this.drawBoard();
     }
 }
 

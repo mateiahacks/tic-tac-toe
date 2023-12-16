@@ -1,7 +1,8 @@
 import { PLAYER } from "../types/index.js";
+import { generateBoard } from "../utils/helpers.js";
 class TicTacToe {
-    constructor(n) {
-        this.board = new Array(n).fill(new Array(n).fill(""));
+    constructor(size) {
+        this.board = generateBoard(size);
         this.currentPlayer = PLAYER.X;
     }
     switchPlayer() {
@@ -10,15 +11,20 @@ class TicTacToe {
         else
             this.currentPlayer = PLAYER.X;
     }
-    onCellClick(element, i, j) {
+    onCellClick(element, x, y) {
+        if (element.innerText)
+            return;
+        this.removeBoard();
         element.innerText = this.currentPlayer;
-        this.board[i][j] = this.currentPlayer;
-        console.log(i, j);
-        console.log(this.board);
+        this.board[x][y] = this.currentPlayer;
         this.switchPlayer();
-        this.draw();
+        this.drawBoard();
     }
-    draw() {
+    removeBoard() {
+        const boardElement = document.querySelector('.board');
+        boardElement === null || boardElement === void 0 ? void 0 : boardElement.parentNode.removeChild(boardElement);
+    }
+    drawBoard() {
         const boardElement = document.createElement('div');
         boardElement.classList.add("board");
         const n = this.board.length;
@@ -37,7 +43,7 @@ class TicTacToe {
         }
     }
     run() {
-        this.draw();
+        this.drawBoard();
     }
 }
 export default TicTacToe;
