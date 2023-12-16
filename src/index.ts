@@ -1,4 +1,7 @@
-const n: number = 5;
+import TicTacToe from "./classes/TicTacToe.js";
 
+const game = new TicTacToe(3);
 
-console.log(n);
+game.run();
+
+console.log(game.board);
