@@ -1,5 +1,5 @@
 import { PLAYER } from "../types/index.js";
-import { generateBoard } from "../utils/helpers.js";
+import { checkDiagonals, checkRowsAndColumns, generateBoard } from "../utils/helpers.js";
 class TicTacToe {
     constructor(size) {
         this.board = generateBoard(size);
@@ -11,12 +11,27 @@ class TicTacToe {
         else
             this.currentPlayer = PLAYER.X;
     }
-    onCellClick(element, x, y) {
+    checkForWin(i, j) {
+        if (checkDiagonals(this.board) || checkRowsAndColumns(this.board, i, j)) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+    onCellClick(element, i, j) {
         if (element.innerText)
             return;
         this.removeBoard();
         element.innerText = this.currentPlayer;
-        this.board[x][y] = this.currentPlayer;
+        this.board[i][j] = this.currentPlayer;
+        if (this.checkForWin(i, j)) {
+            setTimeout(() => {
+                this.board = generateBoard(3);
+                this.removeBoard();
+                this.drawBoard();
+            }, 500);
+        }
         this.switchPlayer();
         this.drawBoard();
     }
