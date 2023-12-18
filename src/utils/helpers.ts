@@ -33,3 +33,14 @@ export const checkRowsAndColumns = (arr: Array<Array<string>>, i: number, j: num
 
     return false;
 }
+
+export const isBoardFull = (arr: Array<Array<string>>) => {
+    for(let i=0; i<arr.length; i++) {
+        for(let j=0; j<arr.length; j++) {
+            if (!arr[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}

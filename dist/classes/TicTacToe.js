@@ -1,7 +1,10 @@
 import { PLAYER } from "../types/index.js";
-import { checkDiagonals, checkRowsAndColumns, generateBoard } from "../utils/helpers.js";
+import { checkDiagonals, checkRowsAndColumns, generateBoard, isBoardFull } from "../utils/helpers.js";
 class TicTacToe {
     constructor(size) {
+        this.player1element = document.querySelector('.player1-score');
+        this.tieElement = document.querySelector('.tie-score');
+        this.player2element = document.querySelector('.player2-score');
         this.board = generateBoard(size);
         this.currentPlayer = PLAYER.X;
     }
@@ -26,14 +29,31 @@ class TicTacToe {
         element.innerText = this.currentPlayer;
         this.board[i][j] = this.currentPlayer;
         if (this.checkForWin(i, j)) {
+            if (this.currentPlayer === PLAYER.X) {
+                this.player1element.innerText = String(Number(this.player1element.innerText) + 1);
+            }
+            else if (this.currentPlayer === PLAYER.O) {
+                this.player2element.innerText = String(Number(this.player2element.innerText) + 1);
+            }
             setTimeout(() => {
-                this.board = generateBoard(3);
+                this.board = generateBoard(this.board.length);
+                this.removeBoard();
+                this.drawBoard();
+            }, 500);
+        }
+        else if (isBoardFull(this.board)) {
+            this.tieElement.innerText = String(Number(this.tieElement.innerText) + 1);
+            setTimeout(() => {
+                this.board = generateBoard(this.board.length);
                 this.removeBoard();
                 this.drawBoard();
             }, 500);
         }
         this.switchPlayer();
         this.drawBoard();
+    }
+    removeEventListeners() {
+        const cells = document.querySelectorAll('.cell');
     }
     removeBoard() {
         const boardElement = document.querySelector('.board');
@@ -48,6 +68,7 @@ class TicTacToe {
             rowElement.classList.add("row");
             for (let j = 0; j < n; j++) {
                 const cell = document.createElement("div");
+                cell.style.fill = "";
                 cell.classList.add("cell");
                 cell.innerText = this.board[i][j];
                 cell.addEventListener("click", () => this.onCellClick(cell, i, j));
