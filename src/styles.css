@@ -67,3 +67,10 @@ body {
     align-items: center;
     justify-content: center;
 }
+
+.current-player {
+    color: white;
+    font-family: 'Konit', sans-serif;
+    font-size: 32px;
+    margin-bottom: 50px;
+}
